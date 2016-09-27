@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <assert.h>
+#include <stdint.h>
 
 #include IMPL
 
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
     char line[MAX_LAST_NAME_SIZE];
     struct timespec start, end;
     double cpu_time1, cpu_time2;
+    int64_t nr_entries = 0;
 
     /* check file opening */
     fp = fopen(DICT_FILE, "r");
@@ -53,7 +55,11 @@ int main(int argc, char *argv[])
         line[i - 1] = '\0';
         i = 0;
         e = append(line, e);
+        ++nr_entries;
     }
+#ifdef OPT
+    entry *pRoot = convertListToBST(pHead, nr_entries);
+#endif
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time1 = diff_in_second(start, end);
 
@@ -64,7 +70,12 @@ int main(int argc, char *argv[])
 
     /* the givn last name to find */
     char input[MAX_LAST_NAME_SIZE] = "zyxel";
+
+#ifdef OPT
+    e = pRoot;
+#else
     e = pHead;
+#endif
 
     assert(findName(input, e) &&
            "Did you implement findName() in " IMPL "?");

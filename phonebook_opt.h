@@ -5,6 +5,8 @@
 
 #define OPT 1
 
+#include <stdint.h>
+
 typedef struct __PHONE_BOOK_DETAILS {
     char firstName[16];
     char email[16];
@@ -20,10 +22,13 @@ typedef struct __PHONE_BOOK_DETAILS {
 typedef struct __PHONE_BOOK_ENTRY {
     char lastName[MAX_LAST_NAME_SIZE];
     struct __PHONE_BOOK_ENTRY *pNext;
+    struct __PHONE_BOOK_ENTRY *pLeft;
+    struct __PHONE_BOOK_ENTRY *pRight;
     details *pDetails;
 } entry;
 
 entry *findName(char lastName[], entry *pHead);
 entry *append(char lastName[], entry *e);
+entry *convertListToBST(entry *pHead, int64_t listSize);
 
 #endif
